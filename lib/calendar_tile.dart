@@ -40,13 +40,15 @@ class CalendarTile extends StatelessWidget {
           decoration: isSelected
               ? new BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).accentColor,
                 )
               : new BoxDecoration(),
           alignment: Alignment.center,
           child: new Text(
             Utils.formatDay(date).toString(),
-            style: isSelected ? Theme.of(context).primaryTextTheme.body1 : dateStyles,
+            style: isSelected
+                ? Theme.of(context).primaryTextTheme.bodyText2
+                : dateStyles,
             textAlign: TextAlign.center,
           ),
         ),

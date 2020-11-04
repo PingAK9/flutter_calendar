@@ -13,6 +13,7 @@ class Calendar extends StatefulWidget {
   final bool isExpandable;
   final DayBuilder dayBuilder;
   final bool showChevronsToChangeRange;
+  final bool showTitle;
   final bool showTodayAction;
   final bool showCalendarPickerIcon;
   final DateTime initialCalendarDateOverride;
@@ -25,7 +26,8 @@ class Calendar extends StatefulWidget {
       this.showTodayAction: true,
       this.showChevronsToChangeRange: true,
       this.showCalendarPickerIcon: true,
-      this.initialCalendarDateOverride});
+      this.initialCalendarDateOverride,
+      this.showTitle: false});
 
   @override
   _CalendarState createState() => new _CalendarState();
@@ -39,6 +41,7 @@ class _CalendarState extends State<Calendar> {
   String currentMonth;
   bool isExpanded = false;
   String displayMonth;
+
   DateTime get selectedDate => _selectedDate;
 
   void initState() {
@@ -98,12 +101,14 @@ class _CalendarState extends State<Calendar> {
       children: [
         leftOuterIcon ?? new Container(),
         leftInnerIcon ?? new Container(),
-        new Text(
-          displayMonth,
-          style: new TextStyle(
-            fontSize: 20.0,
-          ),
-        ),
+        widget.showTitle
+            ? new Text(
+                displayMonth,
+                style: new TextStyle(
+                  fontSize: 20.0,
+                ),
+              )
+            : Container(),
         rightInnerIcon ?? new Container(),
         rightOuterIcon ?? new Container(),
       ],
@@ -181,21 +186,19 @@ class _CalendarState extends State<Calendar> {
 
   TextStyle configureDateStyle(monthStarted, monthEnded) {
     TextStyle dateStyles;
-    final TextStyle body1Style = Theme.of(context).textTheme.body1;
+    final TextStyle body1Style = Theme.of(context).textTheme.bodyText2;
 
     if (isExpanded) {
       final TextStyle body1StyleDisabled = body1Style.copyWith(
-        color: Color.fromARGB(
-          100, 
-          body1Style.color.red, 
-          body1Style.color.green, 
-          body1Style.color.blue,
-        )
-      );
+          color: Color.fromARGB(
+        100,
+        body1Style.color.red,
+        body1Style.color.green,
+        body1Style.color.blue,
+      ));
 
-      dateStyles = monthStarted && !monthEnded
-          ? body1Style
-          : body1StyleDisabled;
+      dateStyles =
+          monthStarted && !monthEnded ? body1Style : body1StyleDisabled;
     } else {
       dateStyles = body1Style;
     }
@@ -226,7 +229,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      child: new Column(
+      child: new Row(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -321,8 +324,8 @@ class _CalendarState extends State<Calendar> {
     DateTime selected = await showDatePicker(
       context: context,
       initialDate: _selectedDate ?? new DateTime.now(),
-      firstDate: new DateTime(1960),
-      lastDate: new DateTime(2050),
+      firstDate: new DateTime(2000),
+      lastDate: new DateTime(2030),
     );
 
     if (selected != null) {
