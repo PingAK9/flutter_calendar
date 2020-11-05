@@ -17,6 +17,7 @@ class Calendar extends StatefulWidget {
   final bool showTodayAction;
   final bool showCalendarPickerIcon;
   final DateTime initialCalendarDateOverride;
+  final Color colorSelectedDay;
 
   Calendar(
       {this.onDateSelected,
@@ -27,7 +28,9 @@ class Calendar extends StatefulWidget {
       this.showChevronsToChangeRange: true,
       this.showCalendarPickerIcon: true,
       this.initialCalendarDateOverride,
-      this.showTitle: false});
+      this.showTitle: false,
+      this.colorSelectedDay
+      });
 
   @override
   _CalendarState createState() => new _CalendarState();
@@ -125,7 +128,7 @@ class _CalendarState extends State<Calendar> {
         child: new GridView.count(
           shrinkWrap: true,
           crossAxisCount: 7,
-          padding: new EdgeInsets.only(bottom: 0.0),
+          padding: new EdgeInsets.all(0),
           children: calendarBuilder(),
         ),
       ),
@@ -143,6 +146,7 @@ class _CalendarState extends State<Calendar> {
           new CalendarTile(
             isDayOfWeek: true,
             dayOfWeek: day,
+            colorSelectedDay: widget.colorSelectedDay
           ),
         );
       },
@@ -167,6 +171,7 @@ class _CalendarState extends State<Calendar> {
               child: this.widget.dayBuilder(context, day),
               date: day,
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
+              colorSelectedDay: widget.colorSelectedDay
             ),
           );
         } else {
@@ -176,6 +181,7 @@ class _CalendarState extends State<Calendar> {
               date: day,
               dateStyles: configureDateStyle(monthStarted, monthEnded),
               isSelected: Utils.isSameDay(selectedDate, day),
+              colorSelectedDay: widget.colorSelectedDay
             ),
           );
         }

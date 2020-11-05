@@ -10,6 +10,7 @@ class CalendarTile extends StatelessWidget {
   final TextStyle dayOfWeekStyles;
   final TextStyle dateStyles;
   final Widget child;
+  final Color colorSelectedDay;
 
   CalendarTile({
     this.onDateSelected,
@@ -20,6 +21,7 @@ class CalendarTile extends StatelessWidget {
     this.dayOfWeekStyles,
     this.isDayOfWeek: false,
     this.isSelected: false,
+    this.colorSelectedDay
   });
 
   Widget renderDateOrDayOfWeek(BuildContext context) {
@@ -37,20 +39,28 @@ class CalendarTile extends StatelessWidget {
       return new InkWell(
         onTap: onDateSelected,
         child: new Container(
-          decoration: isSelected
-              ? new BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).accentColor,
-                )
-              : new BoxDecoration(),
+          padding: const EdgeInsets.all(0),
           alignment: Alignment.center,
-          child: new Text(
-            Utils.formatDay(date).toString(),
-            style: isSelected
-                ? Theme.of(context).primaryTextTheme.bodyText2
-                : dateStyles,
-            textAlign: TextAlign.center,
-          ),
+          child: 
+              new Container(
+                padding: const EdgeInsets.all(0),
+                width: 40,
+                height: 40,
+                decoration: isSelected
+                    ? new BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colorSelectedDay ?? Colors.cyan[600],
+                      )
+                    : new BoxDecoration(),
+                alignment: Alignment.center,
+                child: new Text(
+                  Utils.formatDay(date).toString(),
+                  style: isSelected
+                      ? Theme.of(context).primaryTextTheme.bodyText2
+                      : dateStyles,
+                  textAlign: TextAlign.center,
+                )
+              ),
         ),
       );
     }
